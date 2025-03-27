@@ -1,0 +1,14 @@
+{
+  "tasks": {
+  },
+  "imports": {
+  },
+  "fmt": {
+    "indentWidth": 2,
+    "lineWidth": 10000,
+    "proseWrap": "preserve",
+    "semiColons": true,
+    "singleQuote": true,
+    "useTabs": false
+  }
+}
