@@ -7,6 +7,7 @@ export async function ensureYtDlp() {
   if (!res.ok) throw Error(`Failed to download yt-dlp: ${res.status} ${res.statusText}`);
   const data = await res.arrayBuffer();
   await Deno.writeFile('./yt-dlp', new Uint8Array(data));
+  await Deno.chmod('./yt-dlp', 0o777);
 }
 
 export async function downloadVideo(videoId: string, path?: string) {
