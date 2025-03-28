@@ -45,6 +45,7 @@ app.get('/test', (c) => {
   if (key !== HUGGINGFACE_ACCESS_TOKEN) return c.text('\u{1F480}');
   const id = c.req.query('id');
   if (!id) return c.text('id required');
+  console.info('testing...');
   main(id);
   return c.text('testing...');
 });

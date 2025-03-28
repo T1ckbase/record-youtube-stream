@@ -4,7 +4,8 @@ EXPOSE 7860
 
 WORKDIR /app
 
-RUN chmod -R 777 /app
+# RUN chmod -R 777 /app
+RUN chmod -R 777 /
 
 # Prefer not to run as root.
 # USER deno
