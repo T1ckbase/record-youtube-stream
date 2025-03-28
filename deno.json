@@ -1,8 +1,18 @@
 {
   "tasks": {
+    "start": "deno run --allow-net --allow-read --allow-write=./ --allow-env --allow-run main.ts"
   },
   "imports": {
+    "@huggingface/hub": "npm:@huggingface/hub@^1",
+    "@std/dotenv": "jsr:@std/dotenv",
+    "@std/assert": "jsr:@std/assert",
+    "@std/async": "jsr:@std/async",
+    "@std/media-types": "jsr:@std/media-types",
+    "@std/path": "jsr:@std/path",
+    "@std/fs": "jsr:@std/fs",
+    "hono": "jsr:@hono/hono@^4"
   },
+  "lock": false,
   "fmt": {
     "indentWidth": 2,
     "lineWidth": 10000,
