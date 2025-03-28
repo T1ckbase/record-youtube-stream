@@ -5,6 +5,8 @@ EXPOSE 7860
 WORKDIR /app
 
 RUN chmod -R 777 /app
+
+RUN mkdir -p /.cache
 RUN chmod -R 777 /.cache
 
 # Prefer not to run as root.
