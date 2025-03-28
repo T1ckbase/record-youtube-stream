@@ -1,4 +1,5 @@
 import { join } from '@std/path';
+import { exists } from '@std/fs';
 
 export async function getDirectoryStructureString(
   dirPath: string,
@@ -65,4 +66,19 @@ export async function getFilesInDirectory(dirPath: string): Promise<string[]> {
     }
   }
   return files;
+}
+
+export async function cleanDirectory(directoryPath: string) {
+  if (await exists(directoryPath, { isDirectory: true })) {
+    console.info(`Cleaning up ${directoryPath}...`);
+    for await (const entry of Deno.readDir(directoryPath)) {
+      try {
+        await Deno.remove(`${directoryPath}/${entry.name}`, { recursive: true });
+      } catch (e) {
+        console.error(`Failed to remove ${directoryPath}/${entry.name}:`, e);
+      }
+    }
+  } else {
+    console.info(`${directoryPath} does not exist, skipping cleanup.`);
+  }
 }

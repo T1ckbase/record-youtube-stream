@@ -5,7 +5,7 @@ import { typeByExtension } from '@std/media-types';
 import { delay } from '@std/async';
 import { Hono } from 'hono';
 import { serveStatic } from 'hono/deno';
-import { getDirectoryStructureString, getFilesInDirectory } from './path.ts';
+import { cleanDirectory, getDirectoryStructureString, getFilesInDirectory } from './utils.ts';
 import { downloadVideo, ensureYtDlp } from './yt-dlp.ts';
 import { getLiveStream } from './youtube.ts';
 import * as hub from '@huggingface/hub';
@@ -47,6 +47,8 @@ Deno.serve({ port: 7860 }, app.fetch);
 
 async function main(testVideoId?: string) {
   await ensureYtDlp();
+  await cleanDirectory('./tmp');
+
   const videoId = testVideoId || await getLiveStream(YOUTUBE_CHANNEL_ID);
   if (!videoId) {
     console.log('No live stream found.');
@@ -62,7 +64,7 @@ async function main(testVideoId?: string) {
   const path = `./tmp/${name}`;
 
   console.info(`Uploading ${name}...`);
-  await hub.uploadFiles({
+  const result = await hub.uploadFiles({
     repo,
     accessToken: HUGGINGFACE_ACCESS_TOKEN,
     files: [
@@ -72,13 +74,7 @@ async function main(testVideoId?: string) {
       },
     ],
   });
-  for (const file of files) {
-    try {
-      await Deno.remove(`./tmp/${file}`);
-    } catch (_) {
-      console.error(`Failed to remove ${file}`);
-    }
-  }
+  console.info(result);
 }
 
 while (true) {
