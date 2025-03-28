@@ -7,7 +7,7 @@ WORKDIR /app
 RUN chmod -R 777 /app
 
 # Prefer not to run as root.
-USER deno
+# USER deno
 
 RUN deno install --entrypoint main.ts
 
