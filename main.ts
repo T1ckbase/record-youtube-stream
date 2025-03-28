@@ -1,7 +1,7 @@
 import '@std/dotenv/load';
 import { assertExists } from '@std/assert';
-import { extname } from '@std/path';
-import { typeByExtension } from '@std/media-types';
+// import { extname } from '@std/path';
+// import { typeByExtension } from '@std/media-types';
 import { delay } from '@std/async';
 import { Hono } from 'hono';
 import { serveStatic } from 'hono/deno';
@@ -19,16 +19,20 @@ assertExists(REPO_ID);
 
 const app = new Hono();
 
-app.use(
-  '/*',
-  serveStatic({
-    root: './',
-    onFound: (path, c) => {
-      const type = typeByExtension(extname(path));
-      type && c.header('content-type', type);
-    },
-  }),
-);
+// app.use(
+//   '/*',
+//   serveStatic({
+//     root: './',
+//     onFound: (path, c) => {
+//       const type = typeByExtension(extname(path));
+//       type && c.header('content-type', type);
+//     },
+//   }),
+// );
+
+app.use('/tmp', serveStatic({ path: './tmp' }));
+app.use('/output.txt', serveStatic({ path: './output.txt' }));
+app.use('/error.txt', serveStatic({ path: './error.txt' }));
 
 app.get('/', async (c) => {
   return c.text(await getDirectoryStructureString('.', '', Infinity));

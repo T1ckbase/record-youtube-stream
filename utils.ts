@@ -79,6 +79,6 @@ export async function cleanDirectory(directoryPath: string) {
       }
     }
   } else {
-    console.info(`${directoryPath} does not exist, skipping cleanup.`);
+    // console.info(`${directoryPath} does not exist, skipping cleanup.`);
   }
 }
