@@ -3,11 +3,11 @@ import { exists } from '@std/fs';
 export async function ensureYtDlp() {
   if (await exists('./yt-dlp', { isFile: true })) return;
   console.info('Downloading yt-dlp...');
-  const res = await fetch(`https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp${Deno.build.os === 'windows' ? '.exe' : ''}`);
+  const res = await fetch(`https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp${Deno.build.os === 'windows' ? '.exe' : '_linux'}`);
   if (!res.ok) throw Error(`Failed to download yt-dlp: ${res.status} ${res.statusText}`);
   const data = await res.arrayBuffer();
   await Deno.writeFile('./yt-dlp', new Uint8Array(data));
-  await Deno.chmod('./yt-dlp', 0o777);
+  Deno.build.os === 'linux' && await Deno.chmod('./yt-dlp', 0o777);
 }
 
 export async function downloadVideo(videoId: string, path?: string) {
