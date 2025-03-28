@@ -10,9 +10,10 @@ export async function ensureYtDlp() {
   Deno.build.os === 'linux' && await Deno.chmod('./yt-dlp', 0o777);
 }
 
-export async function downloadVideo(videoId: string, path?: string) {
+export async function downloadVideo({ videoId, path, cookiesFileName }: { videoId: string; path?: string; cookiesFileName?: string }) {
   const args = ['--live-from-start', videoId, '-f', 'bv+ba/b'];
   path && args.push('--paths', path);
+  cookiesFileName && args.push('--cookies', cookiesFileName);
   const command = new Deno.Command('./yt-dlp', {
     args,
     stdin: 'piped',

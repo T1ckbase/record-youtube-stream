@@ -16,6 +16,8 @@ const HUGGINGFACE_ACCESS_TOKEN = Deno.env.get('HUGGINGFACE_ACCESS_TOKEN')!;
 assertExists(HUGGINGFACE_ACCESS_TOKEN);
 const REPO_ID = Deno.env.get('REPO_ID')!;
 assertExists(REPO_ID);
+const COOKIES = Deno.env.get('COOKIES');
+COOKIES && Deno.writeTextFileSync('./cookies.txt', COOKIES, { create: true });
 
 const app = new Hono();
 
@@ -59,7 +61,7 @@ async function main(testVideoId?: string) {
     return;
   }
   console.log(`videoId: ${videoId}`);
-  if (!await downloadVideo(videoId, './tmp')) return;
+  if (!await downloadVideo({ videoId, path: './tmp', cookiesFileName: COOKIES && './cookies.txt' })) return;
 
   const repo: hub.RepoDesignation = { type: 'dataset', name: REPO_ID };
   const files = await getFilesInDirectory('./tmp');
